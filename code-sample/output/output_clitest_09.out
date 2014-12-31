@@ -1,0 +1,47 @@
+*********** CLI Test09 begins ******************
+>>> create table employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+>>> load employee employee_5
+>>> print employee
+EmpName           |  Age  |  Height    |  Salary  |  
+===================================================
+Anettea Belote    |  67   |  6.400000  |  75000   |  
+Zina Legleiter    |  45   |  6.300000  |  150000  |  
+Rena Broadus      |  68   |  5.900000  |  250000  |  
+Lorriane Shimmin  |  49   |  6.600000  |  400000  |  
+Elvira Binns      |  36   |  5.600000  |  200000  |  
+>>> SELECT AGG employee GET MAX(Height)
+MAX()     |  
+===========
+6.600000  |  
+
+>>> SELECT AGG employee GET MIN(Salary)
+MIN()  |  
+========
+75000  |  
+
+>>> SELECT AGG (PROJECT employee GET [ * ]) GET MAX(Salary)
+MAX()   |  
+=========
+400000  |  
+
+>>> SELECT AGG (PROJECT employee GET [ Salary ]) GET SUM(Salary)
+SUM()    |  
+==========
+1075000  |  
+
+>>> SELECT AGG (PROJECT employee GET [ Salary ]) GET COUNT(Salary)
+COUNT()  |  
+==========
+5        |  
+
+>>> SELECT AGG (PROJECT employee GET [ Salary ]) GET AVG(Salary)
+AVG()          |  
+================
+215000.000000  |  
+
+>>> SELECT AGG (PROJECT employee GET [ * ]) GET COUNT(Height)
+COUNT()  |  
+==========
+5        |  
+
+>>> drop table employee

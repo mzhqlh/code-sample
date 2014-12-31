@@ -1,0 +1,49 @@
+*********** CLI Test01 begins ******************
+>>> create table ekin name = varchar(40), age = int
+>>> print cli_columns
+column_name         |  table_name   |  position  |  type  |  length  |  
+======================================================================
+column_name         |  cli_columns  |  0         |  2     |  30      |  
+table_name          |  cli_columns  |  1         |  2     |  50      |  
+position            |  cli_columns  |  2         |  0     |  4       |  
+type                |  cli_columns  |  3         |  0     |  4       |  
+length              |  cli_columns  |  4         |  0     |  4       |  
+table_name          |  cli_tables   |  0         |  2     |  50      |  
+file_location       |  cli_tables   |  1         |  2     |  100     |  
+type                |  cli_tables   |  2         |  2     |  20      |  
+table_name          |  cli_indexes  |  0         |  2     |  50      |  
+column_name         |  cli_indexes  |  1         |  2     |  30      |  
+max_key_length      |  cli_indexes  |  2         |  0     |  4       |  
+is_variable_length  |  cli_indexes  |  3         |  0     |  4       |  
+name                |  ekin         |  0         |  2     |  40      |  
+age                 |  ekin         |  1         |  0     |  4       |  
+>>> print cli_tables
+table_name   |  file_location        |  type  |  
+===============================================
+cli_columns  |  ../cli//cli_columns  |  heap  |  
+cli_tables   |  ../cli//cli_tables   |  heap  |  
+cli_indexes  |  ../cli//cli_indexes  |  heap  |  
+ekin         |  ../cli//ekin         |  heap  |  
+>>> drop table ekin
+>>> print cli_tables
+table_name   |  file_location        |  type  |  
+===============================================
+cli_columns  |  ../cli//cli_columns  |  heap  |  
+cli_tables   |  ../cli//cli_tables   |  heap  |  
+cli_indexes  |  ../cli//cli_indexes  |  heap  |  
+>>> print cli_columns
+column_name         |  table_name   |  position  |  type  |  length  |  
+======================================================================
+column_name         |  cli_columns  |  0         |  2     |  30      |  
+table_name          |  cli_columns  |  1         |  2     |  50      |  
+position            |  cli_columns  |  2         |  0     |  4       |  
+type                |  cli_columns  |  3         |  0     |  4       |  
+length              |  cli_columns  |  4         |  0     |  4       |  
+table_name          |  cli_tables   |  0         |  2     |  50      |  
+file_location       |  cli_tables   |  1         |  2     |  100     |  
+type                |  cli_tables   |  2         |  2     |  20      |  
+table_name          |  cli_indexes  |  0         |  2     |  50      |  
+column_name         |  cli_indexes  |  1         |  2     |  30      |  
+max_key_length      |  cli_indexes  |  2         |  0     |  4       |  
+is_variable_length  |  cli_indexes  |  3         |  0     |  4       |  
+We should not see anything related to ekin table

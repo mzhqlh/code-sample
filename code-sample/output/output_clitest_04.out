@@ -1,0 +1,57 @@
+*********** CLI Test04 begins ******************
+>>> create table tbl_employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+>>> load tbl_employee employee_5
+>>> print tbl_employee
+EmpName           |  Age  |  Height    |  Salary  |  
+===================================================
+Anettea Belote    |  67   |  6.400000  |  75000   |  
+Zina Legleiter    |  45   |  6.300000  |  150000  |  
+Rena Broadus      |  68   |  5.900000  |  250000  |  
+Lorriane Shimmin  |  49   |  6.600000  |  400000  |  
+Elvira Binns      |  36   |  5.600000  |  200000  |  
+>>> SELECT PROJECT tbl_employee GET [ * ]
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Zina Legleiter        |  45                |  6.300000             |  150000               |  
+Rena Broadus          |  68                |  5.900000             |  250000               |  
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT PROJECT (PROJECT tbl_employee GET [ * ]) GET [ EmpName ]
+tbl_employee.EmpName  |  
+=======================
+Anettea Belote        |  
+Zina Legleiter        |  
+Rena Broadus          |  
+Lorriane Shimmin      |  
+Elvira Binns          |  
+
+>>> SELECT PROJECT (PROJECT tbl_employee GET [ EmpName, Age ]) GET [ Age ]
+tbl_employee.Age  |  
+===================
+67                |  
+45                |  
+68                |  
+49                |  
+36                |  
+
+>>> SELECT PROJECT (PROJECT (PROJECT tbl_employee GET [ * ]) GET [ EmpName, Age ]) GET [ Age ]
+tbl_employee.Age  |  
+===================
+67                |  
+45                |  
+68                |  
+49                |  
+36                |  
+
+>>> SELECT PROJECT tbl_employee GET [ EmpName, Age ]
+tbl_employee.EmpName  |  tbl_employee.Age  |  
+============================================
+Anettea Belote        |  67                |  
+Zina Legleiter        |  45                |  
+Rena Broadus          |  68                |  
+Lorriane Shimmin      |  49                |  
+Elvira Binns          |  36                |  
+
+>>> drop table tbl_employee

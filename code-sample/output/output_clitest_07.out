@@ -1,0 +1,35 @@
+*********** CLI Test07 begins ******************
+>>> create table employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+>>> create table ages Age = int, Explanation = varchar(50)
+>>> create table salary Salary = int, Explanation = varchar(50)
+>>> load employee employee_5
+>>> load ages ages_90
+>>> load salary salary_5
+>>> SELECT GHJOIN employee, ages WHERE Age = Age PARTITIONS(10)
+employee.EmpName  |  employee.Age  |  employee.Height  |  employee.Salary  |  ages.Age  |  ages.Explanation  |  
+==============================================================================================================
+Anettea Belote    |  67            |  6.400000         |  75000            |  67        |  very-young        |  
+Zina Legleiter    |  45            |  6.300000         |  150000           |  45        |  teenager          |  
+Rena Broadus      |  68            |  5.900000         |  250000           |  68        |  very-young        |  
+Lorriane Shimmin  |  49            |  6.600000         |  400000           |  49        |  teenager          |  
+Elvira Binns      |  36            |  5.600000         |  200000           |  36        |  infant            |  
+
+>>> SELECT GHJOIN (GHJOIN employee, salary WHERE Salary = Salary PARTITIONS(10)), ages WHERE Age = Age PARTITIONS(10)
+employee.EmpName  |  employee.Age  |  employee.Height  |  employee.Salary  |  salary.Salary  |  salary.Explanation        |  ages.Age  |  ages.Explanation  |  
+=============================================================================================================================================================
+Anettea Belote    |  67            |  6.400000         |  75000            |  75000          |  good life                 |  67        |  very-young        |  
+Zina Legleiter    |  45            |  6.300000         |  150000           |  150000         |  very good life            |  45        |  teenager          |  
+Rena Broadus      |  68            |  5.900000         |  250000           |  250000         |  very very very good life  |  68        |  very-young        |  
+Elvira Binns      |  36            |  5.600000         |  200000           |  200000         |  very very good life       |  36        |  infant            |  
+
+>>> SELECT GHJOIN (GHJOIN (GHJOIN employee, employee WHERE EmpName = EmpName PARTITIONS(10)), salary) WHERE Salary = Salary PARTITIONS(10)), ages WHERE Age = Age PARTITIONS(10)
+employee.EmpName  |  employee.Age  |  employee.Height  |  employee.Salary  |  employee.EmpName  |  employee.Age  |  employee.Height  |  employee.Salary  |  salary.Salary  |  salary.Explanation        |  ages.Age  |  ages.Explanation  |  
+===========================================================================================================================================================================================================================================
+Anettea Belote    |  67            |  6.400000         |  75000            |  Anettea Belote    |  67            |  6.400000         |  75000            |  75000          |  good life                 |  67        |  very-young        |  
+Zina Legleiter    |  45            |  6.300000         |  150000           |  Zina Legleiter    |  45            |  6.300000         |  150000           |  150000         |  very good life            |  45        |  teenager          |  
+Rena Broadus      |  68            |  5.900000         |  250000           |  Rena Broadus      |  68            |  5.900000         |  250000           |  250000         |  very very very good life  |  68        |  very-young        |  
+Elvira Binns      |  36            |  5.600000         |  200000           |  Elvira Binns      |  36            |  5.600000         |  200000           |  200000         |  very very good life       |  36        |  infant            |  
+
+>>> drop table employee
+>>> drop table ages
+>>> drop table salary

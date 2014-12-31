@@ -1,0 +1,79 @@
+*********** CLI Test05 begins ******************
+>>> create table tbl_employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+>>> load tbl_employee employee_5
+>>> print tbl_employee
+EmpName           |  Age  |  Height    |  Salary  |  
+===================================================
+Anettea Belote    |  67   |  6.400000  |  75000   |  
+Zina Legleiter    |  45   |  6.300000  |  150000  |  
+Rena Broadus      |  68   |  5.900000  |  250000  |  
+Lorriane Shimmin  |  49   |  6.600000  |  400000  |  
+Elvira Binns      |  36   |  5.600000  |  200000  |  
+>>> SELECT FILTER tbl_employee WHERE Age = 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Zina Legleiter        |  45                |  6.300000             |  150000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Age < 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Age > 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Rena Broadus          |  68                |  5.900000             |  250000               |  
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Age <= 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Zina Legleiter        |  45                |  6.300000             |  150000               |  
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Age >= 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Zina Legleiter        |  45                |  6.300000             |  150000               |  
+Rena Broadus          |  68                |  5.900000             |  250000               |  
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Age != 45
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Rena Broadus          |  68                |  5.900000             |  250000               |  
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER tbl_employee WHERE Height < 6.3
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Rena Broadus          |  68                |  5.900000             |  250000               |  
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER tbl_employee WHERE EmpName < L
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER (FILTER tbl_employee WHERE  Age < 67) WHERE EmpName < L
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Elvira Binns          |  36                |  5.600000             |  200000               |  
+
+>>> SELECT FILTER (FILTER tbl_employee WHERE  Age <= 67) WHERE Height >= 6.4
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Anettea Belote        |  67                |  6.400000             |  75000                |  
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+
+>>> SELECT FILTER (FILTER (FILTER tbl_employee WHERE EmpName > Ap) WHERE  Age <= 67) WHERE Height >= 6.4
+tbl_employee.EmpName  |  tbl_employee.Age  |  tbl_employee.Height  |  tbl_employee.Salary  |  
+============================================================================================
+Lorriane Shimmin      |  49                |  6.600000             |  400000               |  
+
+>>> drop table tbl_employee

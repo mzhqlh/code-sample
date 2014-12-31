@@ -1,0 +1,93 @@
+Project 3 report 
+
+/*******************************************************************************************************************************/
+
+1) Metadata, primary page, and overflow page design
+In this project, we store metadata (N, level, next) in the first page of overflow page file. 
+In each primary page, we store the pageNum of its first overflow page(-1 if no overflow page exists) in the last 4 bits.
+In overflow page, we store the pageNum  of its next overflow page (-1 if no next overflow page exists) in the last 4 bits.
+
+Page design:
+The last 4 bits stores nextPage number
+And in position PageSize - 4 - 4 * bucket_count to PageSize - 4 we store the offset of the first record in each bucket. 
+
+/*******************************************************************************************************************************/
+
+2) Split and Merge Implementation:
+
+a) Split:
+If there is a new generating overflow page, then a split operation will be activated. By hashing, the page of
+corresponding bucket1, where the next points, is read into the memory. It costs 1 I/O operation if there is no overflow page
+or n+1 I/O operations if there are n overflow pages. Then all the entries record in the pages will be rehashed with a one increase
+of level 1. Because split operation will generate a piles of unnecessary pages left in the overflow pages of bucket1, to reuse
+these empty pages, we let the emptypage pointer point at the next page of the last page in bucket1 (after split). Every time
+other entry operation requires new pages, we reuse the remaining empty pages before consideration of appending new pages.
+
+b) Merge:
+Merge operation will be activated when the last entry is deleted from a page and makes it empty. There is only an exception
+when level indicator equals 0 and next pointer points at the first page of entry file. Besides this situation, we move
+the primary page of bucket2, which corresponds to the hashing bucket1 where next pointer points at, into the overflow page
+files and then all the pages of bucket2 are in overflowpage files. In the end, we link the pages of bucket1 and 
+bucket2 by setting the next page ID of the last page in bucket1 to the head of bucket2. 
+
+/*******************************************************************************************************************************/
+
+3) O(1) element access in  a page
+To achieve O(1) element access in a page, we reorganize the page format of entry files, which is quite different from pages
+in record files. A in-page hash table of is established while reserving the free space start pointer. The beginning location of
+a certain bucket is stored at the bottom of the pages, which is quite similar to the original directory existence for record
+pages. The essential difference locates at that the size of hash table is set while that of directory changes dynamically.
+The record format also change to below:
+			
+	Entry record:	Key_Value || rid.pageNum || rid.slotNum || Next record pointer
+
+The pointer indicated above points at the next record sharing the same bucket with this record. By doing so, we can access
+a entry record by first looking at the hahsing bucket pointer at the bottom of a page, and then scan with the help of next record
+pointer. If the records are hashed uniformly, then we are supposed to achieve element access roughly in constant time.
+
+/********************************************************************************************************************************/
+
+
+4) Hash Function
+To achieve O(1) element access in page, we need an extra set of hash function for entry record besides that for entry pages. For hashing
+TypeReal key, we regard it as an integer that has the identical bit numbers and apply the same hash function. Roughly speaking, it seems
+to work well because the hash function we adopt for integer only includes digit operations. The followings are a further explanation of
+hash function we use.
+
+a)Hash functions for pages
+
+TypeVarChar: This hash function is called DJB2. This algorithm was first reported by Dan Bernstein many years ago in comp.lang.c. in fact the
+magic of number 33 (why it works better than many other constants, prime or not) has never been adequately explained. For efficiency reason,
+we only consider the first four, middle and last but two digits.
+
+TypeInt and TypeReal: The name of this hash function is 32 bit Mix Functions, which is a modified version based on an original
+suggestion on Robert Jenkin's part in 1997. The specific value of the bit shifts are obtianed from running the accompanied
+search program.
+
+In the end, the above hash values should be scaled by the current table size (depending on level indicator).
+
+b)Hash Functions for entry records in page
+
+TypeVarChar: This hash function originates from "Data Structures and Algorithm Analysis in C++" authored by Mark A. Weiss.
+The function works extremely well for English character by a consideration on their combination. To speed it up, we only take
+the first four, middle and last characters.
+
+TypeInt and TypeReal: This hash function uses a magic number which was calculated using a special multi-threaded test program
+that ran for many hours, which calculates the avalanche effect, independence of output bit changes and the probability of a
+change in each output bit if any input bit is changed.
+
+
+/*******************************************************************************************************************************/
+
+5)Disk I/O cost
+For insertEntry(), we need 1 readPage, 1 writePage, 0 appendPage if the entry is inserted into primary page. 
+For deleteEntry(), we need 1 readPage, 1 writePage, 0 appendPage if the entry is in the primary page and no merge is triggered.
+For scan(), we need to read all pages including primary pages and overflow pages, and 0 writePage, 0 appendPage
+For getNextEntry(), as when we scan the index file, we store the entries in the memory, 0 readPage, 0 writePage, 0 appendPage are needed
+
+/*******************************************************************************************************************************/
+
+6)
+For deleteEntry() during a scan, as when we scan the pages, we will cache the data of current page in memory, so deleteEntry() in the page file will not conflict with the data cached in memory. 
+
+ 

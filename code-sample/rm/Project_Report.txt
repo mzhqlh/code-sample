@@ -1,0 +1,55 @@
+
+Project 2 Report 
+
+Jia Chen	jiac5@uci.edu
+Hao Zhang   	hzhang10@uci.edu
+
+
+* Record format design
+In our system, a record is stored as below
+
+	|version|field_count|p0|p1|p2|...|pn|v0|v1|...|vn|
+
+ - version indicates the version of the record, which is used to support add/drop attribute
+ - field_count is the total count of all fields
+ - pi is the offset of the end of field i, which is used to provide linear time field access
+ - vi is the real data of field i
+
+* Page directory design
+In our system, a record directory is composed by three parts
+|status|slot_offset|slot_length|
+ - status is a integer indicates the current status of the records, it can be NORMAL, DELETED or TOMBSTONE
+ - slot_offset stores the start position of the record in the page
+ - slot_length is the total length of the the record
+
+* Catalog
+ - Information about tables is stored in table "Tables", including columns "table_name", "table_id", and "version"
+ - Information about columns is stored in table "Columns", including columns "column_name", "table_name", "position", "type", "length", and "version"
+ - When the system starts for the first time, table "Tables" and "Columns" will be created and initialized. Otherwise, when system starts, system will load related information from these two tables
+ - Any operation on tables and columns will be persisted in the storage file "Tables" and "Columns"
+
+* Add/Drop attribute
+To support adding/dropping attribute, we applied a schema versioning method. 
+ - When a table is created, its version is initialized as 0
+ - When an attribute is added in/dropped from the table, the version of the table increases by 1
+ - When a record is inserted into the table, the system stores the current version in the header part of the record
+ - When reading a record, the system checks if the record is in the same version as current table. If the version of record is lower, system first reads the record out with the older version, then convert the data into newest version
+
+* Insert Record and Delete Record
+ - when seeking a page of enough space, the program will first scan the directory of this page and try to find a slot that has been deleted.
+   If it has enough space, insert the record to it and otherwise check space at the back of the page.
+
+
+* Reorganize table  
+ - The system support reorganization operation to move all record data to the top of the file
+ - During the process, the deleted records and tombstones will be removed from the file (thus RIDs of records may change) 
+ - In the process of reorganizing files, we set pagenum to zero, as well as the free space pointer and slot number to make a trick that
+   the pages now are empty and we simply enumerate all the records and insert it back to our file. 
+
+* Record Scan
+ - In the main function of scan, we allocate two vectors projected into the class of RBFM_scaniterator. ProjectedAttribute is used to store the required backing attribute (field) and recordDescripotr for convenience of matching the required field. 
+   Then we record the attribute target and begin loops through the whole file, page by page, slot by slot. 
+ - judgeAttribute function is used to help us find the rids of all accepted record. In it we introduce a int type comparator to deal with the comparison of different type of records.
+ - GetNextRecord is the main method for RBFM_ScanIterator. The next variable is used to store the current position for scanning.  For a centain record, we use nested loop to find the required field 
+   (the outside loop simply pick up the attribute requried, the inner loop is used for enumerate all the attribute for matching)
+

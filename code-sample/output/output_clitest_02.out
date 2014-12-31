@@ -1,0 +1,62 @@
+*********** CLI Test02 begins ******************
+>>> create table tbl_employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+Before loading file: 
+>>> print tbl_employee
+EmpName  |  Age  |  Height  |  Salary  |  
+========================================
+>>> load tbl_employee employee_50
+After loading file: 
+>>> print tbl_employee
+EmpName             |  Age  |  Height    |  Salary  |  
+=====================================================
+Anettea Belote      |  67   |  6.400000  |  98784   |  
+Zina Legleiter      |  45   |  6.300000  |  76608   |  
+Rena Broadus        |  68   |  5.900000  |  174384  |  
+Lorriane Shimmin    |  49   |  6.600000  |  244944  |  
+Elvira Binns        |  36   |  5.600000  |  136080  |  
+Zandra Laverty      |  47   |  5.800000  |  174384  |  
+Kira Chand          |  56   |  6.200000  |  163296  |  
+Rodrick Traina      |  28   |  6.700000  |  147168  |  
+Argelia Dixson      |  34   |  6.600000  |  85680   |  
+Jacelyn Rarick      |  68   |  6.800000  |  121968  |  
+Jen Peguero         |  69   |  5.700000  |  226800  |  
+Isadora Bowers      |  34   |  5.800000  |  211680  |  
+Jillian Meiser      |  22   |  6.700000  |  225792  |  
+Faye Dudney         |  38   |  6.200000  |  73584   |  
+Ignacia Alverson    |  31   |  6.000000  |  139104  |  
+Matilde Chalmers    |  38   |  6.000000  |  69552   |  
+Isa Goucher         |  22   |  6.100000  |  141120  |  
+Tova Percival       |  50   |  7.000000  |  61488   |  
+Reed Bourque        |  70   |  5.600000  |  217728  |  
+Aida Engh           |  68   |  6.800000  |  51408   |  
+Rosita Granillo     |  28   |  6.500000  |  90720   |  
+Sheri Berthiaume    |  22   |  6.000000  |  107856  |  
+Rita Brow           |  22   |  5.700000  |  222768  |  
+Celina Reedy        |  68   |  5.900000  |  61488   |  
+Katie Zirkle        |  35   |  6.800000  |  147168  |  
+Isabella Bevil      |  30   |  5.600000  |  145152  |  
+Tamatha Mattox      |  19   |  7.000000  |  243936  |  
+Brigid Berens       |  40   |  6.100000  |  121968  |  
+Morris Barfield     |  50   |  7.100000  |  243936  |  
+Roseanne Hattaway   |  63   |  6.000000  |  165312  |  
+Ariane Miah         |  19   |  6.600000  |  106848  |  
+Lacie Leep          |  67   |  6.300000  |  117936  |  
+Daron Dauber        |  25   |  6.200000  |  149184  |  
+Les Sigmund         |  61   |  7.000000  |  194544  |  
+Armandina Wellner   |  61   |  6.700000  |  190512  |  
+Shante Luckett      |  35   |  6.400000  |  122976  |  
+Cory Broady         |  70   |  7.000000  |  197568  |  
+Cassandra Clubb     |  39   |  6.300000  |  213696  |  
+Adriana Liston      |  47   |  5.900000  |  87696   |  
+Ava Clayson         |  33   |  7.000000  |  192528  |  
+Dalila Gean         |  40   |  6.100000  |  232848  |  
+Hortensia Loiselle  |  56   |  5.900000  |  123984  |  
+Kiley Mcglynn       |  68   |  6.500000  |  68544   |  
+Yang Matas          |  21   |  5.500000  |  120960  |  
+Letitia Hammill     |  49   |  5.600000  |  96768   |  
+Evia Corp           |  48   |  6.800000  |  181440  |  
+Thalia Deardorff    |  27   |  6.000000  |  81648   |  
+Theo Sieg           |  27   |  5.800000  |  106848  |  
+Jake Smalley        |  64   |  5.500000  |  171360  |  
+Katina Wilczynsk    |  54   |  5.900000  |  170352  |  
+>>> drop table tbl_employee

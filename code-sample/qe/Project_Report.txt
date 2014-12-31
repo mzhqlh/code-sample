@@ -1,0 +1,45 @@
+Project 4
+
+
+1. RelationManager Extensions
+
+We extended our RelationManager as follows:
+
+a) Add new functions createIndex, destroyIndex, and indexScan. When creating an index, the existing data stored in the 
+table will be added into the new index properly
+
+b)Add a new system table "IndexCatalog" to store what indexes we have for each table
+c) When insert a tuple into a relation
+, the <key, rid> pair must be added into each related index
+d
+c) When delete a tuple from a relation, the corresponding <key, rid> pair must be removed from each related index
+
+
+
+
+2. QueryEngine
+
+
+2.1 Filter
+The Filter is implemented by iterating all data and judging if the currect record meets given 
+condition
+
+
+2.2 Project
+The Project is implemented by iterating all records, and returning only the desired columns
+
+
+2.3 Grace Hash Join 
+The GraceHashJoin is implemented by first hash the two relations 
+into partitions respectively, then for each page in left's partition i, we iterate all pages in right's partition i to 
+search for matched records. And the matched records are written into a merged table, then we can iterate in it to get 
+desired result. After the join completes, all the intermediate files (left partitions, right partitions, merged file) 
+will be removed from disk.
+
+
+2.4 Block Nested-Loop Join Interface
+The BNL Join is implemented by taking leftIn as outer relation and rightIn as inner relation. We applied TableScan to scan the rightIn to match with the records in leftIn.
+
+
+2.5 Aggregate
+We implemented basic aggregation. But we did not implement group based hash aggregation yet.

@@ -1,0 +1,56 @@
+*********** CLI Test10 begins ******************
+>>> create table employee EmpName = varchar(30), Age = int, Height = real, Salary = int
+>>> create table ages Age = int, Explanation = varchar(50)
+>>> create table salary Salary = int, Explanation = varchar(50)
+>>> load employee employee_5
+>>> load ages ages_90
+>>> load salary salary_5
+>>> SELECT AGG ages GROUPBY(Explanation) GET AVG(Age) PARTITIONS(10)
+ages.Explanation  |  AVG(ages.Explanation)  |  
+=============================================
+baby              |  5.000000               |  
+child             |  12.000000              |  
+dude              |  25.000000              |  
+infant            |  35.000000              |  
+newborn           |  57.500000              |  
+teenager          |  45.000000              |  
+very-young        |  77.500000              |  
+wish              |  17.000000              |  
+
+>>> SELECT AGG ages GROUPBY(Explanation) GET MIN(Age) PARTITIONS(10)
+ages.Explanation  |  MIN(ages.Explanation)  |  
+=============================================
+baby              |  1                      |  
+child             |  10                     |  
+dude              |  20                     |  
+infant            |  31                     |  
+newborn           |  51                     |  
+teenager          |  40                     |  
+very-young        |  65                     |  
+wish              |  15                     |  
+
+>>> SELECT AGG (PROJECT ages GET [ Age, Explanation ]) GROUPBY(Explanation) GET MIN(Age) PARTITIONS(10)
+ages.Explanation  |  MIN(ages.Explanation)  |  
+=============================================
+baby              |  1                      |  
+child             |  10                     |  
+dude              |  20                     |  
+infant            |  31                     |  
+newborn           |  51                     |  
+teenager          |  40                     |  
+very-young        |  65                     |  
+wish              |  15                     |  
+
+>>> SELECT AGG (FILTER ages WHERE Age > 14) GROUPBY(Explanation) GET MIN(Age) PARTITIONS(10)
+ages.Explanation  |  MIN(ages.Explanation)  |  
+=============================================
+dude              |  20                     |  
+infant            |  31                     |  
+newborn           |  51                     |  
+teenager          |  40                     |  
+very-young        |  65                     |  
+wish              |  15                     |  
+
+>>> drop table employee
+>>> drop table salary
+>>> drop table ages
