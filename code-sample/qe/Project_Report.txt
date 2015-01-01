@@ -8,11 +8,9 @@ We extended our RelationManager as follows:
 a) Add new functions createIndex, destroyIndex, and indexScan. When creating an index, the existing data stored in the 
 table will be added into the new index properly
 
-b)Add a new system table "IndexCatalog" to store what indexes we have for each table
-c) When insert a tuple into a relation
-, the <key, rid> pair must be added into each related index
-d
-c) When delete a tuple from a relation, the corresponding <key, rid> pair must be removed from each related index
+b) Add a new system table "IndexCatalog" to store what indexes we have for each table
+c) When insert a tuple into a relation, the <key, rid> pair must be added into each related index
+d) When delete a tuple from a relation, the corresponding <key, rid> pair must be removed from each related index
 
 
 
